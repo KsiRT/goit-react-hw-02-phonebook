@@ -6,19 +6,26 @@ import { ContactList } from './Contactlist/ContactList';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
     name: '',
     number: '',
   };
+
   // Принимаем фильтр из инпута
   handleFilterInput = value => {
     this.setState({ filter: value });
+  };
+  addNewContact = newContact => {
+    const { contacts } = this.state;
+    const checkContact = contacts.find(
+      contact => contact.name === newContact.name
+    );
+    checkContact
+      ? Notiflix.Notify.failure(`${newContact.name} is already in contacts`)
+      : this.setState(prev => ({
+          contacts: [...prev.contacts, newContact],
+        }));
   };
   // Фильтруем
   getFilteredContact = () => {
@@ -32,7 +39,9 @@ export class App extends Component {
   };
   // Удаляем контакт
   handleDelete = (id, name) => {
-    this.setState(prev => prev.contacts.filter(contact => contact.id !== id));
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
 
     Notiflix.Notify.success(
       `${name} was successfully deleted from your Phonebook`
@@ -45,7 +54,7 @@ export class App extends Component {
     return (
       <>
         <h1>Phonebook</h1>
-        <ContactForm />
+        <ContactForm newContact={this.addNewContact} />
 
         <h2>Contacts</h2>
         <Filter filter={filter} onFilterInput={this.handleFilterInput} />
