@@ -3,10 +3,16 @@ import ContactForm from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import Notiflix from 'notiflix';
 import { ContactList } from './Contactlist/ContactList';
+import { styled } from 'styled-components';
 
 export class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
     filter: '',
     name: '',
     number: '',
@@ -52,14 +58,23 @@ export class App extends Component {
     const { filter } = this.state;
     const filteredContact = this.getFilteredContact(filter);
     return (
-      <>
+      <Container>
         <h1>Phonebook</h1>
         <ContactForm newContact={this.addNewContact} />
 
         <h2>Contacts</h2>
         <Filter filter={filter} onFilterInput={this.handleFilterInput} />
         <ContactList contacts={filteredContact} onDelete={this.handleDelete} />
-      </>
+      </Container>
     );
   }
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #8295b8;
+  height: 100vh;
+`;
