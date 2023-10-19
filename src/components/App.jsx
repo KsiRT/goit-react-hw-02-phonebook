@@ -14,8 +14,6 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   // Принимаем фильтр из инпута
@@ -25,7 +23,7 @@ export class App extends Component {
   addNewContact = newContact => {
     const { contacts } = this.state;
     const checkContact = contacts.find(
-      contact => contact.name === newContact.name
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
     );
     checkContact
       ? Notiflix.Notify.failure(`${newContact.name} is already in contacts`)
